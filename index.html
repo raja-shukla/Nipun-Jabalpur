@@ -1,0 +1,355 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { BookOpen, Target, AlertTriangle, GitMerge, FileText, BarChart2, Clock, Award, Users, Mic, ThumbsDown, Eye, HelpCircle, ArrowRightCircle, Menu, X, CheckCircle, Layers, LayoutGrid } from 'lucide-react';
+
+// Reusable Components
+const Card = ({ children, className = '' }) => (
+    <div className={`bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full transition-all duration-300 hover:shadow-xl hover:bg-white/90 ${className}`}>
+        {children}
+    </div>
+);
+
+const Section = ({ id, children }) => (
+    <section id={id} className={`py-20 md:py-24 animate-fade-in-up`}>
+        {children}
+    </section>
+);
+
+const SectionTitle = ({ children, icon: Icon, subtitle }) => (
+    <div className="mb-12 text-center">
+        <div className="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4">
+            {Icon && <Icon className="w-10 h-10 text-sky-600" />}
+        </div>
+        <h2 className="text-4xl md:text-5xl font-bold text-slate-800">{children}</h2>
+        {subtitle && <p className="mt-4 text-lg max-w-3xl mx-auto text-slate-500">{subtitle}</p>}
+    </div>
+);
+
+// --- Content Components for each section ---
+
+const Introduction = () => (
+    <Section id="introduction">
+        <SectionTitle icon={BookOpen}>Background & Rationale</SectionTitle>
+        <p className="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed">
+            To realize the goals of the <strong>NIPUN Bharat Mission</strong>, it's essential to build on the foundational step of tracking structured pedagogy. While monitoring classroom practices is crucial, true transformation happens when we directly link these efforts to student learning outcomes. This integrated model is designed to bridge that gap in Jabalpur.
+        </p>
+        <div className="mt-12 grid md:grid-cols-3 gap-8">
+            <Card className="text-center group">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-100">
+                    <Mic className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-800 mb-2">Practice Monitoring</h3>
+                <p className="text-slate-500">The established system for tracking teaching fidelity via the Shiksha MP app.</p>
+            </Card>
+            <Card className="text-center group">
+                 <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-100">
+                    <Layers className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-800 mb-2">Two-Pronged Approach</h3>
+                <p className="text-slate-500">Adding school-led Health Reports and independent Third-Party Assessments.</p>
+            </Card>
+            <Card className="text-center group">
+                 <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-purple-100">
+                    <GitMerge className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-800 mb-2">The Convergence</h3>
+                <p className="text-slate-500">A powerful solution to link pedagogical practice directly to learning outcomes.</p>
+            </Card>
+        </div>
+    </Section>
+);
+
+const CurrentSystem = () => (
+     <Section id="current-system">
+        <SectionTitle icon={Mic} subtitle="We currently measure only structured pedagogy fidelity.">The Current System: Shiksha MP App</SectionTitle>
+        <div className="grid md:grid-cols-5 gap-8 items-center">
+            <div className="md:col-span-3">
+                <h3 className="text-2xl font-semibold text-slate-800 mb-4">Captured Features</h3>
+                <p className="text-slate-600 mb-4 text-lg">The official state platform records fidelity to structured pedagogy through indicators such as:</p>
+                <ul className="list-none space-y-3 text-slate-600">
+                    <li className="flex items-center"><CheckCircle className="w-5 h-5 mr-3 text-sky-500" /> Attendance</li>
+                    <li className="flex items-center"><CheckCircle className="w-5 h-5 mr-3 text-sky-500" /> Teaching Guide (TG) usage</li>
+                    <li className="flex items-center"><CheckCircle className="w-5 h-5 mr-3 text-sky-500" /> Workbook Correction and Usage</li>
+                    <li className="flex items-center"><CheckCircle className="w-5 h-5 mr-3 text-sky-500" /> Use of Teaching-Learning Materials (TLM)</li>
+                    <li className="flex items-center"><CheckCircle className="w-5 h-5 mr-3 text-sky-500" /> Tracker Usage</li>
+                    <li className="flex items-center"><CheckCircle className="w-5 h-5 mr-3 text-sky-500" /> Student Engagement</li>
+                </ul>
+            </div>
+            <div className="md:col-span-2">
+                <div className="bg-rose-100 shadow-lg rounded-xl p-6 border border-rose-200 h-full">
+                     <h3 className="text-xl font-semibold text-rose-900 mb-4 flex items-center"><AlertTriangle className="w-6 h-6 mr-2 text-rose-600" />Key Gaps</h3>
+                     <ul className="space-y-3">
+                        <li className="flex items-start">
+                            <ThumbsDown className="w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0" />
+                            <div>
+                                <strong className="text-rose-900">Data Authenticity:</strong>
+                                <p className="text-rose-800 text-sm">Checkbox-based observations may differ from ground reality.</p>
+                            </div>
+                        </li>
+                        <li className="flex items-start">
+                           <ThumbsDown className="w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0" />
+                            <div>
+                                <strong className="text-rose-900">Outcome Disconnect:</strong>
+                                <p className="text-rose-800 text-sm">No direct link between teaching practices and student learning.</p>
+                            </div>
+                        </li>
+                        <li className="flex items-start">
+                            <ThumbsDown className="w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0" />
+                            <div>
+                                <strong className="text-rose-900">No Feedback Loop:</strong>
+                                <p className="text-rose-800 text-sm">Teachers often do not receive actionable insights.</p>
+                            </div>
+                        </li>
+                     </ul>
+                </div>
+            </div>
+        </div>
+    </Section>
+);
+
+const Proposal = () => (
+    <Section id="proposal">
+        <SectionTitle icon={Layers} subtitle="Our two-pronged approach to address the current gaps.">The Proposal: Outcome Monitoring Layers</SectionTitle>
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <Card>
+                <h3 className="text-2xl font-semibold text-slate-800 mb-4">Layer 1: Monthly School Health Reports</h3>
+                <p className="text-slate-600 mb-2">An ownership-based reporting system with cascading consolidation:</p>
+                <ul className="list-none space-y-2 my-4">
+                    <li className="flex items-center p-2 bg-slate-100 rounded-md">School Report <span className="text-xs text-slate-500 ml-2">(by HM+Teachers)</span></li>
+                    <li className="mx-auto w-px h-4 bg-slate-300"></li>
+                    <li className="flex items-center p-2 bg-slate-100 rounded-md">Cluster Report <span className="text-xs text-slate-500 ml-2">(by CAC)</span></li>
+                     <li className="mx-auto w-px h-4 bg-slate-300"></li>
+                    <li className="flex items-center p-2 bg-slate-100 rounded-md">Block Report <span className="text-xs text-slate-500 ml-2">(by BRCC)</span></li>
+                </ul>
+                <p className="text-slate-600 font-semibold">Key Indicators: <span className="font-normal">Total enrolment (Gr 2-3) and % of students who are NIPUN.</span></p>
+                 <a href="https://lookerstudio.google.com/reporting/031d4620-b46f-4b61-8359-098c703eca21" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:text-blue-800 inline-flex items-center group mt-4">
+                    View Sample Dashboard <ArrowRightCircle className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                </a>
+            </Card>
+            <Card>
+                <h3 className="text-2xl font-semibold text-slate-800 mb-4">Layer 2: Quarterly Third-Party Assessments</h3>
+                <p className="text-slate-600 mb-4">Objective assessments to triangulate health reports and ensure data credibility.</p>
+                <ul className="list-none space-y-3 text-slate-600">
+                    <li><strong className="text-slate-800">Assessors:</strong> DIET and B.Ed. students.</li>
+                    <li><strong className="text-slate-800">Supervisors:</strong> 75+ District Officials.</li>
+                    <li><strong className="text-slate-800">Sampling:</strong> Random schools selected per block.</li>
+                </ul>
+            </Card>
+        </div>
+        <div className="bg-amber-100 border border-amber-200 shadow-lg rounded-xl p-6 transition-all duration-300 hover:shadow-xl">
+            <div className="flex flex-col md:flex-row items-center text-center md:text-left">
+                <div className="p-4 bg-white rounded-full shadow-md mb-4 md:mb-0 md:mr-6">
+                    <AlertTriangle className="w-10 h-10 text-amber-500" />
+                </div>
+                <div>
+                    <h3 className="text-2xl font-semibold text-amber-900 mb-2">Key Risk: "Teach to Test" Behavior</h3>
+                    <p className="text-amber-800 leading-relaxed max-w-3xl">
+                        Our mitigation strategies ensure that assessments are aligned with TG competencies, making quality pedagogy the surest path to good results.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </Section>
+);
+
+const ConvergenceStrategy = () => (
+    <Section id="convergence-strategy">
+        <SectionTitle icon={GitMerge} subtitle="How we mitigate risks and link pedagogy to outcomes.">The Convergence Strategy</SectionTitle>
+        <p className="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed mb-12">
+            The following strategies directly address the "Teach to Test" risk by making quality pedagogy the most reliable path to student success.
+        </p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <Card>
+                <h4 className="text-xl font-semibold text-slate-800 mb-2">Align Assessments</h4>
+                <p className="text-slate-600">Assessment tools are explicitly linked to TG-based lesson plans and competencies.</p>
+            </Card>
+             <Card>
+                <h4 className="text-xl font-semibold text-slate-800 mb-2">Pedagogy Fidelity Index (PFI)</h4>
+                <p className="text-slate-600">A composite index from Shiksha MP data to quantify teaching quality.</p>
+            </Card>
+            <Card>
+                <h4 className="text-xl font-semibold text-slate-800 mb-2">Targeted Feedback</h4>
+                <p className="text-slate-600">Use triangulated data for supportive mentoring, not just compliance checks.</p>
+            </Card>
+        </div>
+
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 md:p-12 rounded-2xl shadow-2xl">
+            <h3 className="text-3xl font-bold text-center mb-8 text-white">Practice vs. Outcome Matrix</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-white">
+                 <div></div>
+                <div className="text-center font-bold p-2 text-slate-300">Low Outcome</div>
+                <div className="text-center font-bold p-2 text-slate-300">High Outcome</div>
+                <div className="text-center font-bold p-2 self-center text-slate-300">High Fidelity</div>
+                <div className="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-orange-500/80 backdrop-blur-sm border border-white/20"><HelpCircle className="w-10 h-10 mb-2" /><h4 className="font-bold text-lg">Needs Academic Support</h4></div>
+                <div className="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-green-500/80 backdrop-blur-sm border border-white/20"><Award className="w-10 h-10 mb-2" /><h4 className="font-bold text-lg">Model Schools</h4></div>
+                <div className="text-center font-bold p-2 self-center text-slate-300">Low Fidelity</div>
+                <div className="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-red-600/80 backdrop-blur-sm border border-white/20"><Users className="w-10 h-10 mb-2" /><h4 className="font-bold text-lg">Priority for Mentoring</h4></div>
+                <div className="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-yellow-500/80 backdrop-blur-sm border border-white/20"><Eye className="w-10 h-10 mb-2" /><h4 className="font-bold text-lg">Gaming Risk</h4></div>
+            </div>
+        </div>
+    </Section>
+);
+
+const DataVisibility = () => (
+    <Section id="data-visibility">
+        <SectionTitle icon={LayoutGrid} subtitle="Making data accessible and actionable at all levels.">Data Visibility & Accountability</SectionTitle>
+        <p className="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed mb-12">
+            To drive accountability, data will be shared through tier-wise visual tools, ensuring everyone from the teacher to the district officials has a clear view of progress.
+        </p>
+        <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center">
+                <h3 className="text-2xl font-semibold text-slate-800 mb-2">Classroom</h3>
+                <p className="text-slate-500">Progress Meters</p>
+            </Card>
+            <Card className="text-center">
+                <h3 className="text-2xl font-semibold text-slate-800 mb-2">School</h3>
+                <p className="text-slate-500">School Dashboards</p>
+            </Card>
+            <Card className="text-center">
+                <h3 className="text-2xl font-semibold text-slate-800 mb-2">Cluster & Block</h3>
+                <p className="text-slate-500">Aggregate Dashboards</p>
+            </Card>
+        </div>
+    </Section>
+);
+
+const Timeline = () => {
+    const timelineData = [
+        { phase: 'Jul', title: 'Setup & Training' },
+        { phase: 'Aug', title: 'Baseline Assessment' },
+        { phase: 'Sep', title: 'Dashboard Rollout' },
+        { phase: 'Nov', title: 'Midline Assessment' },
+        { phase: 'Feb', title: 'Endline + Awards' },
+    ];
+
+    return (
+        <Section id="timeline">
+            <SectionTitle icon={Clock}>Implementation Timeline</SectionTitle>
+            <div className="relative border-s-4 border-slate-200 ms-6">
+                {timelineData.map((item) => (
+                    <div key={item.phase} className="relative mb-10 ms-10">
+                        <div className="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50">
+                            <span className="font-bold text-lg text-sky-600">{item.phase}</span>
+                        </div>
+                        <div className="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50">
+                            <h3 className="text-xl font-semibold text-slate-900">{item.title}</h3>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </Section>
+    );
+};
+
+const Conclusion = () => (
+    <Section id="conclusion">
+        <SectionTitle icon={Target}>Conclusion</SectionTitle>
+         <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-xl text-white shadow-2xl">
+            <p className="text-xl leading-relaxed">
+                This integrated model offers a replicable blueprint for converging pedagogy and outcomes. Through structured Health Reports, third-party assessments, and strong visual tools, the district aims to drive authentic, systemic FLN transformation.
+            </p>
+        </div>
+    </Section>
+);
+
+// Main App Component
+export default function App() {
+    const [activeTab, setActiveTab] = useState('introduction');
+    const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const sectionRefs = useRef({});
+
+    const navItems = [
+        { id: 'introduction', label: 'Introduction', icon: BookOpen },
+        { id: 'current-system', label: 'The Current System', icon: Mic },
+        { id: 'proposal', label: 'The Proposal', icon: Layers },
+        { id: 'convergence-strategy', label: 'Convergence Strategy', icon: GitMerge },
+        { id: 'data-visibility', label: 'Data Visibility', icon: LayoutGrid },
+        { id: 'timeline', label: 'Timeline', icon: Clock },
+        { id: 'conclusion', label: 'Conclusion', icon: Target },
+    ];
+    
+    const handleNavClick = (id) => {
+        setMobileMenuOpen(false);
+        const element = document.getElementById(id);
+        if (element) {
+            const yOffset = -20; 
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+        }
+    };
+    
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveTab(entry.target.id);
+                    }
+                });
+            },
+            { rootMargin: '-40% 0px -60% 0px' }
+        );
+
+        navItems.forEach(item => {
+            const el = document.getElementById(item.id);
+            if (el) {
+                sectionRefs.current[item.id] = el;
+                observer.observe(el);
+            }
+        });
+
+        return () => {
+            Object.values(sectionRefs.current).forEach(el => {
+                if (el) observer.unobserve(el);
+            });
+        };
+    }, []);
+
+    return (
+        <div className="bg-slate-50 text-slate-700">
+            <div className="bg-dots-pattern">
+                <aside className={`fixed top-0 left-0 z-40 w-72 h-screen bg-gradient-to-b from-slate-800 to-slate-900 text-white transition-transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
+                    <div className="h-full px-4 py-6">
+                        <h1 className="text-3xl font-bold text-white px-2 mb-8 flex items-center">
+                            <span className="p-2 bg-sky-500/20 rounded-lg mr-3"><Target /></span>
+                            Jabalpur FLN
+                        </h1>
+                        <ul className="space-y-2 font-medium">
+                            {navItems.map(item => (
+                                <li key={item.id}>
+                                    <a href={`#${item.id}`} onClick={(e) => { e.preventDefault(); handleNavClick(item.id); }}
+                                       className={`flex items-center p-3 rounded-lg group transition-all duration-200 ${activeTab === item.id ? 'bg-sky-500/20 text-white' : 'text-slate-300 hover:bg-white/10'}`}>
+                                        <item.icon className="w-5 h-5" />
+                                        <span className="ms-3">{item.label}</span>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </aside>
+                <main className="flex-1 md:ms-72">
+                    <div className="px-4 sm:px-6 lg:px-12">
+                        <Introduction />
+                        <CurrentSystem />
+                        <Proposal />
+                        <ConvergenceStrategy />
+                        <DataVisibility />
+                        {/* SampleOutputs is removed as per new structure, can be added back if needed */}
+                        <Timeline />
+                        <Conclusion />
+                    </div>
+                </main>
+                <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} type="button" 
+                        className="inline-flex items-center p-3 text-sm text-slate-500 rounded-lg md:hidden fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-300">
+                    <span className="sr-only">Open/Close sidebar</span>
+                    {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                </button>
+            </div>
+            <style>{`
+                .animate-fade-in-up { animation: fadeInUp 0.7s ease-in-out; }
+                @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+                html { scroll-padding-top: 40px; }
+                .bg-dots-pattern { background-image: radial-gradient(circle at 1px 1px, #d1d5db 1px, transparent 0); background-size: 2rem 2rem; }
+            `}</style>
+        </div>
+    );
+}
