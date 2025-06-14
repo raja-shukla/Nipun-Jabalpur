@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jabalpur FLN Monitoring Dashboard</title>
+    <title>Jabalpur FLN Monitoring Dashboard - Interactive</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,6 +23,51 @@
         .sidebar {
             transition: transform 0.3s ease-in-out;
         }
+        .matrix-quadrant {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .matrix-quadrant:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        /* Custom styles for range slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            background: #cbd5e1;
+            height: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            margin-top: -0.25rem;
+            background: #4f46e5;
+            height: 1rem;
+            width: 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #4f46e5;
+        }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            background-color: rgba(0,0,0,0.5); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 50; opacity: 0; 
+            transition: opacity 0.3s ease; 
+            pointer-events: none;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { 
+            background: white; padding: 2rem; border-radius: 0.75rem; 
+            max-width: 500px; width: 90%; 
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
     </style>
 </head>
 <body class="text-slate-700">
@@ -34,180 +79,20 @@
                     <i class="fa-solid fa-bullseye p-3 bg-sky-500/20 rounded-lg mr-3"></i>
                     Jabalpur FLN
                 </h1>
-                <ul class="space-y-2 font-medium" id="nav-menu">
-                    <li><a href="#introduction" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 bg-sky-500/20 text-white"><i class="fa-solid fa-book-open w-5 h-5"></i><span class="ms-3">Introduction</span></a></li>
-                    <li><a href="#current-system" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 text-slate-300 hover:bg-white/10"><i class="fa-solid fa-microphone w-5 h-5"></i><span class="ms-3">The Current System</span></a></li>
-                    <li><a href="#proposal" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 text-slate-300 hover:bg-white/10"><i class="fa-solid fa-layer-group w-5 h-5"></i><span class="ms-3">The Proposal</span></a></li>
-                    <li><a href="#convergence-strategy" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 text-slate-300 hover:bg-white/10"><i class="fa-solid fa-code-merge w-5 h-5"></i><span class="ms-3">Convergence Strategy</span></a></li>
-                    <li><a href="#data-visibility" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 text-slate-300 hover:bg-white/10"><i class="fa-solid fa-table-cells-large w-5 h-5"></i><span class="ms-3">Data Visibility</span></a></li>
-                    <li><a href="#timeline" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 text-slate-300 hover:bg-white/10"><i class="fa-solid fa-clock w-5 h-5"></i><span class="ms-3">Timeline</span></a></li>
-                    <li><a href="#conclusion" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 text-slate-300 hover:bg-white/10"><i class="fa-solid fa-flag-checkered w-5 h-5"></i><span class="ms-3">Conclusion</span></a></li>
-                </ul>
+                <ul class="space-y-2 font-medium" id="nav-menu"></ul>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="flex-1 md:ms-72">
             <div class="px-4 sm:px-6 lg:px-12">
-                
-                <section id="introduction" class="section">
-                    <div class="mb-12 text-center">
-                        <div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid fa-book-open w-10 h-10 text-sky-600"></i></div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-800">Background & Rationale</h2>
-                    </div>
-                    <p class="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed">To realize the goals of the <strong>NIPUN Bharat Mission</strong>, it's essential to build on the foundational step of tracking structured pedagogy. While monitoring classroom practices is crucial, true transformation happens when we directly link these efforts to student learning outcomes. This integrated model is designed to bridge that gap in Jabalpur.</p>
-                </section>
-
-                <section id="current-system" class="section">
-                    <div class="mb-12 text-center">
-                        <div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid fa-microphone w-10 h-10 text-sky-600"></i></div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-800">The Current System: Shiksha MP App</h2>
-                        <p class="mt-4 text-lg max-w-3xl mx-auto text-slate-500">We currently measure only structured pedagogy fidelity.</p>
-                    </div>
-                    <div class="grid md:grid-cols-5 gap-8 items-center">
-                        <div class="md:col-span-3">
-                            <h3 class="text-2xl font-semibold text-slate-800 mb-4">Captured Features</h3>
-                            <ul class="list-none space-y-3 text-slate-600 text-lg">
-                                <li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Attendance</li>
-                                <li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Teaching Guide (TG) usage</li>
-                                <li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Workbook Correction and Usage</li>
-                                <li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Use of Teaching-Learning Materials (TLM)</li>
-                                <li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Tracker Usage</li>
-                                <li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Student Engagement</li>
-                            </ul>
-                        </div>
-                        <div class="md:col-span-2">
-                            <div class="bg-rose-100 shadow-lg rounded-xl p-6 border border-rose-200 h-full">
-                                <h3 class="text-xl font-semibold text-rose-900 mb-4 flex items-center"><i class="fa-solid fa-triangle-exclamation w-6 h-6 mr-2 text-rose-600"></i>Key Gaps</h3>
-                                <ul class="space-y-3">
-                                    <li class="flex items-start"><i class="fa-solid fa-thumbs-down w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0"></i><div><strong class="text-rose-900">Data Authenticity:</strong><p class="text-rose-800 text-sm">Checkbox-based observations may differ from ground reality.</p></div></li>
-                                    <li class="flex items-start"><i class="fa-solid fa-thumbs-down w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0"></i><div><strong class="text-rose-900">Outcome Disconnect:</strong><p class="text-rose-800 text-sm">No direct link between teaching practices and student learning.</p></div></li>
-                                    <li class="flex items-start"><i class="fa-solid fa-thumbs-down w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0"></i><div><strong class="text-rose-900">No Feedback Loop:</strong><p class="text-rose-800 text-sm">Teachers often do not receive actionable insights.</p></div></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="proposal" class="section">
-                    <div class="mb-12 text-center">
-                        <div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid fa-layer-group w-10 h-10 text-sky-600"></i></div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-800">The Proposal: Outcome Monitoring Layers</h2>
-                         <p class="mt-4 text-lg max-w-3xl mx-auto text-slate-500">Our two-pronged approach to address the current gaps.</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-8 mb-12">
-                         <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full">
-                            <h3 class="text-2xl font-semibold text-slate-800 mb-4">Layer 1: Monthly School Health Reports</h3>
-                            <p class="text-slate-600 mb-2">An ownership-based reporting system with cascading consolidation:</p>
-                            <ul class="list-none space-y-2 my-4 text-center">
-                                <li class="p-2 bg-slate-100 rounded-md">School Report <span class="text-xs text-slate-500">(by HM+Teachers)</span></li>
-                                <li class="mx-auto w-px h-4 bg-slate-300"></li>
-                                <li class="p-2 bg-slate-100 rounded-md">Cluster Report <span class="text-xs text-slate-500">(by CAC)</span></li>
-                                <li class="mx-auto w-px h-4 bg-slate-300"></li>
-                                <li class="p-2 bg-slate-100 rounded-md">Block Report <span class="text-xs text-slate-500">(by BRCC)</span></li>
-                            </ul>
-                            <a href="https://lookerstudio.google.com/reporting/031d4620-b46f-4b61-8359-098c703eca21" target="_blank" rel="noopener noreferrer" class="block group mt-4">
-                                <div class="bg-blue-50 p-4 rounded-lg border-2 border-dashed border-blue-200 hover:border-blue-400 hover:bg-blue-100 transition-all duration-300">
-                                    <div class="flex items-center">
-                                        <div class="p-2 bg-blue-500 text-white rounded-lg"><i class="fa-solid fa-chart-line"></i></div>
-                                        <div class="ml-4">
-                                            <h4 class="font-semibold text-blue-800">View Sample Dashboard</h4>
-                                            <p class="text-sm text-blue-600">See a live example</p>
-                                        </div>
-                                        <i class="fa-solid fa-arrow-right-circle w-5 h-5 ml-auto text-blue-400 group-hover:text-blue-600 transition-colors"></i>
-                                    </div>
-                                </div>
-                            </a>
-                         </div>
-                         <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full">
-                            <h3 class="text-2xl font-semibold text-slate-800 mb-4">Layer 2: Quarterly Third-Party Assessments</h3>
-                            <p class="text-slate-600 mb-4">Objective assessments to triangulate health reports and ensure data credibility.</p>
-                            <ul class="list-none space-y-3 text-slate-600">
-                                <li><strong class="text-slate-800">Assessors:</strong> DIET and B.Ed. students.</li>
-                                <li><strong class="text-slate-800">Supervisors:</strong> 75+ District Officials.</li>
-                                <li><strong class="text-slate-800">Sampling:</strong> Random schools selected per block.</li>
-                            </ul>
-                         </div>
-                    </div>
-                    <div class="bg-amber-100 border border-amber-200 shadow-lg rounded-xl p-6">
-                        <div class="flex flex-col md:flex-row items-center text-center md:text-left">
-                            <div class="flex-shrink-0 p-4 bg-white rounded-full shadow-md mb-4 md:mb-0 md:mr-6 flex items-center justify-center w-20 h-20">
-                                <i class="fa-solid fa-triangle-exclamation fa-2x text-amber-500"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-semibold text-amber-900 mb-2">Key Risk: "Teach to Test" Behavior</h3>
-                                <p class="text-amber-800 leading-relaxed max-w-3xl">Our mitigation strategies ensure that assessments are aligned with TG competencies, making quality pedagogy the surest path to good results.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="convergence-strategy" class="section">
-                     <div class="mb-12 text-center">
-                        <div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid fa-code-merge w-10 h-10 text-sky-600"></i></div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-800">The Convergence Strategy</h2>
-                         <p class="mt-4 text-lg max-w-3xl mx-auto text-slate-500">How we mitigate risks and link pedagogy to outcomes.</p>
-                    </div>
-                     <p class="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed mb-12">The following strategies directly address the "Teach to Test" risk by making quality pedagogy the most reliable path to student success.</p>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                        <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full"><h4 class="text-xl font-semibold text-slate-800 mb-2">Align Assessments</h4><p class="text-slate-600">Assessment tools are explicitly linked to TG-based lesson plans and competencies.</p></div>
-                        <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full"><h4 class="text-xl font-semibold text-slate-800 mb-2">Pedagogy Fidelity Index (PFI)</h4><p class="text-slate-600">A composite index from Shiksha MP data to quantify teaching quality.</p></div>
-                        <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full"><h4 class="text-xl font-semibold text-slate-800 mb-2">Targeted Feedback</h4><p class="text-slate-600">Use triangulated data for supportive mentoring, not just compliance checks.</p></div>
-                    </div>
-                    <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 md:p-12 rounded-2xl shadow-2xl">
-                        <h3 class="text-3xl font-bold text-center mb-8 text-white">Practice vs. Outcome Matrix</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-white">
-                            <div></div>
-                            <div class="text-center font-bold p-2 text-slate-300">Low Outcome</div>
-                            <div class="text-center font-bold p-2 text-slate-300">High Outcome</div>
-                            <div class="text-center font-bold p-2 self-center text-slate-300">High Fidelity</div>
-                            <div class="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-orange-500/80"><i class="fa-solid fa-circle-question w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">Needs Academic Support</h4></div>
-                            <div class="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-green-500/80"><i class="fa-solid fa-award w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">Model Schools</h4></div>
-                            <div class="text-center font-bold p-2 self-center text-slate-300">Low Fidelity</div>
-                            <div class="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-red-600/80"><i class="fa-solid fa-users w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">Priority for Mentoring</h4></div>
-                            <div class="flex flex-col justify-center items-center p-6 rounded-lg text-center bg-yellow-500/80"><i class="fa-solid fa-eye w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">Gaming Risk</h4></div>
-                        </div>
-                    </div>
-                </section>
-                
-                <section id="data-visibility" class="section">
-                    <div class="mb-12 text-center">
-                        <div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid fa-table-cells-large w-10 h-10 text-sky-600"></i></div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-800">Data Visibility & Accountability</h2>
-                         <p class="mt-4 text-lg max-w-3xl mx-auto text-slate-500">Making data accessible and actionable at all levels.</p>
-                    </div>
-                    <p class="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed mb-12">To drive accountability, data will be shared through tier-wise visual tools, ensuring everyone from the teacher to the district officials has a clear view of progress.</p>
-                    <div class="grid md:grid-cols-3 gap-8">
-                        <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 text-center"><h3 class="text-2xl font-semibold text-slate-800 mb-2">Classroom</h3><p class="text-slate-500">Progress Meters</p></div>
-                        <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 text-center"><h3 class="text-2xl font-semibold text-slate-800 mb-2">School</h3><p class="text-slate-500">School Dashboards</p></div>
-                        <div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 text-center"><h3 class="text-2xl font-semibold text-slate-800 mb-2">Cluster & Block</h3><p class="text-slate-500">Aggregate Dashboards</p></div>
-                    </div>
-                </section>
-
-                <section id="timeline" class="section">
-                     <div class="mb-12 text-center">
-                        <div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid fa-clock w-10 h-10 text-sky-600"></i></div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-800">Implementation Timeline</h2>
-                    </div>
-                    <div class="relative border-s-4 border-slate-200 ms-6">
-                        <div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Jul</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Setup & Training</h3></div></div>
-                        <div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Aug</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Baseline Assessment</h3></div></div>
-                        <div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Sep</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Dashboard Rollout</h3></div></div>
-                        <div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Nov</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Midline Assessment</h3></div></div>
-                        <div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Feb</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Endline + Awards</h3></div></div>
-                    </div>
-                </section>
-
-                <section id="conclusion" class="section">
-                    <div class="mb-12 text-center">
-                        <div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid fa-flag-checkered w-10 h-10 text-sky-600"></i></div>
-                        <h2 class="text-4xl md:text-5xl font-bold text-slate-800">Conclusion</h2>
-                    </div>
-                    <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-xl text-white shadow-2xl">
-                        <p class="text-xl leading-relaxed">This integrated model offers a replicable blueprint for converging pedagogy and outcomes. Through structured Health Reports, third-party assessments, and strong visual tools, the district aims to drive authentic, systemic FLN transformation.</p>
-                    </div>
-                </section>
-
+                <section id="introduction" class="section"></section>
+                <section id="current-system" class="section"></section>
+                <section id="proposal" class="section"></section>
+                <section id="convergence-strategy" class="section"></section>
+                <section id="data-visibility" class="section"></section>
+                <section id="timeline" class="section"></section>
+                <section id="conclusion" class="section"></section>
             </div>
         </main>
 
@@ -215,55 +100,127 @@
         <button id="mobile-menu-button" type="button" class="inline-flex items-center p-3 text-sm text-slate-500 rounded-lg md:hidden fixed top-4 left-4 z-50 bg-white/80 backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-300">
             <i class="fa-solid fa-bars w-6 h-6"></i>
         </button>
+
+        <!-- Modal for Matrix -->
+        <div id="matrix-modal" class="modal-overlay">
+            <div class="modal-content" id="modal-content-box">
+                <!-- Modal content will be injected here -->
+            </div>
+        </div>
     </div>
 
     <script>
-        const sections = document.querySelectorAll('.section');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const sidebar = document.getElementById('sidebar');
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // Smooth scroll for nav links
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
+            const appData = {
+                sections: [
+                    { id: 'introduction', title: 'Background & Rationale', icon: 'fa-book-open', content: `<p class="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed">To realize the goals of the <strong>NIPUN Bharat Mission</strong>, it's essential to build on the foundational step of tracking structured pedagogy. While monitoring classroom practices is crucial, true transformation happens when we directly link these efforts to student learning outcomes. This integrated model is designed to bridge that gap in Jabalpur.</p>` },
+                    { id: 'current-system', title: 'The Current System: Shiksha MP App', subtitle: 'We currently measure only structured pedagogy fidelity.', icon: 'fa-microphone', content: `<div class="grid md:grid-cols-5 gap-8 items-center"><div class="md:col-span-3"><h3 class="text-2xl font-semibold text-slate-800 mb-4">Captured Features</h3><ul class="list-none space-y-3 text-slate-600 text-lg"><li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Attendance</li><li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Teaching Guide (TG) usage</li><li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Workbook Correction and Usage</li><li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Use of Teaching-Learning Materials (TLM)</li><li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Tracker Usage</li><li class="flex items-center"><i class="fa-solid fa-check-circle w-5 h-5 mr-3 text-sky-500"></i> Student Engagement</li></ul></div><div class="md:col-span-2"><div class="bg-rose-100 shadow-lg rounded-xl p-6 border border-rose-200 h-full"><h3 class="text-xl font-semibold text-rose-900 mb-4 flex items-center"><i class="fa-solid fa-triangle-exclamation w-6 h-6 mr-2 text-rose-600"></i>Key Gaps</h3><ul class="space-y-3"><li class="flex items-start"><i class="fa-solid fa-thumbs-down w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0"></i><div><strong class="text-rose-900">Data Authenticity:</strong><p class="text-rose-800 text-sm">Checkbox-based observations may differ from ground reality.</p></div></li><li class="flex items-start"><i class="fa-solid fa-thumbs-down w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0"></i><div><strong class="text-rose-900">Outcome Disconnect:</strong><p class="text-rose-800 text-sm">No direct link between teaching practices and student learning.</p></div></li><li class="flex items-start"><i class="fa-solid fa-thumbs-down w-5 h-5 mr-3 mt-1 text-rose-600 flex-shrink-0"></i><div><strong class="text-rose-900">No Feedback Loop:</strong><p class="text-rose-800 text-sm">Teachers often do not receive actionable insights.</p></div></li></ul></div></div></div>` },
+                    { id: 'proposal', title: 'The Proposal: Outcome Monitoring Layers', subtitle: 'Our two-pronged approach to address the current gaps.', icon: 'fa-layer-group', content: `<div class="grid md:grid-cols-2 gap-8 mb-12"><div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full"><h3 class="text-2xl font-semibold text-slate-800 mb-4">Layer 1: Monthly School Health Reports</h3><p class="text-slate-600 mb-2">An ownership-based reporting system with cascading consolidation:</p><ul class="list-none space-y-2 my-4 text-center"><li class="p-2 bg-slate-100 rounded-md">School Report <span class="text-xs text-slate-500">(by HM+Teachers)</span></li><li class="mx-auto w-px h-4 bg-slate-300"></li><li class="p-2 bg-slate-100 rounded-md">Cluster Report <span class="text-xs text-slate-500">(by CAC)</span></li><li class="mx-auto w-px h-4 bg-slate-300"></li><li class="p-2 bg-slate-100 rounded-md">Block Report <span class="text-xs text-slate-500">(by BRCC)</span></li></ul><a href="https://lookerstudio.google.com/reporting/031d4620-b46f-4b61-8359-098c703eca21" target="_blank" rel="noopener noreferrer" class="block group mt-4"><div class="bg-blue-50 p-4 rounded-lg border-2 border-dashed border-blue-200 hover:border-blue-400 hover:bg-blue-100 transition-all duration-300"><div class="flex items-center"><div class="p-2 bg-blue-500 text-white rounded-lg"><i class="fa-solid fa-chart-line"></i></div><div class="ml-4"><h4 class="font-semibold text-blue-800">View Sample Dashboard</h4><p class="text-sm text-blue-600">See a live example</p></div><i class="fa-solid fa-arrow-right-circle w-5 h-5 ml-auto text-blue-400 group-hover:text-blue-600 transition-colors"></i></div></div></a></div><div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full"><h3 class="text-2xl font-semibold text-slate-800 mb-4">Layer 2: Quarterly Third-Party Assessments</h3><p class="text-slate-600 mb-4">Objective assessments to triangulate health reports and ensure data credibility.</p><ul class="list-none space-y-3 text-slate-600"><li><strong class="text-slate-800">Assessors:</strong> DIET and B.Ed. students.</li><li><strong class="text-slate-800">Supervisors:</strong> 75+ District Officials.</li><li><strong class="text-slate-800">Sampling:</strong> Random schools selected per block.</li></ul></div></div>` },
+                    { id: 'convergence-strategy', title: 'The Convergence Strategy', subtitle: 'How we mitigate risks and link pedagogy to outcomes.', icon: 'fa-code-merge', content: `<p class="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed mb-12">The following strategies address the "Teach to Test" risk by making quality pedagogy the most reliable path to student success. The PFI Calculator below demystifies how teaching activities translate into a score.</p><div class="grid lg:grid-cols-2 gap-8 mb-12" id="pfi-calculator-container"></div><div id="matrix-info-box" class="mb-8 p-4 bg-sky-50 border-sky-200 border rounded-lg text-center text-sky-800" style="display: none;"></div><div id="matrix-container"></div>`},
+                    { id: 'data-visibility', title: 'Data Visibility & Sample Outputs', subtitle: 'Making data accessible and showing concrete examples.', icon: 'fa-table-cells-large', content: `<p class="text-xl text-center max-w-4xl mx-auto text-slate-600 leading-relaxed mb-12">To drive accountability, data will be shared through tier-wise visual tools. Below is a sample of a School Dashboard, one of the key outputs of this system.</p><div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50"><h3 class="text-2xl font-semibold text-slate-800 mb-4 text-center">School Dashboard Snapshot</h3><div class="overflow-x-auto"><table class="w-full text-left"><thead class="text-sm text-slate-600 border-b-2 border-slate-200"><tr><th scope="col" class="p-4">School Name</th><th scope="col" class="p-4 text-center">PFI Score</th><th scope="col" class="p-4 text-center">NIPUN % (Teacher)</th><th scope="col" class="p-4 text-center">NIPUN % (DIET)</th><th scope="col" class="p-4">Category</th></tr></thead><tbody><tr class="border-b border-slate-100 hover:bg-slate-50"><td class="p-4 font-medium text-slate-900">PS Bagora</td><td class="p-4 text-center text-slate-600">90%</td><td class="p-4 text-center text-slate-600">92%</td><td class="p-4 text-center text-slate-600">88%</td><td class="p-4"><span class="px-3 py-1 text-sm font-semibold rounded-full border bg-green-100 text-green-800 border-green-200">Model School</span></td></tr><tr class="border-b border-slate-100 hover:bg-slate-50"><td class="p-4 font-medium text-slate-900">PS Sukha</td><td class="p-4 text-center text-slate-600">40%</td><td class="p-4 text-center text-slate-600">92%</td><td class="p-4 text-center text-slate-600">41%</td><td class="p-4"><span class="px-3 py-1 text-sm font-semibold rounded-full border bg-yellow-100 text-yellow-800 border-yellow-200">Gaming Risk</span></td></tr><tr class="border-b border-slate-100 hover:bg-slate-50"><td class="p-4 font-medium text-slate-900">PS Barha</td><td class="p-4 text-center text-slate-600">30%</td><td class="p-4 text-center text-slate-600">28%</td><td class="p-4 text-center text-slate-600">25%</td><td class="p-4"><span class="px-3 py-1 text-sm font-semibold rounded-full border bg-red-100 text-red-800 border-red-200">Priority for Mentoring</span></td></tr><tr class="hover:bg-slate-50"><td class="p-4 font-medium text-slate-900">PS Deori</td><td class="p-4 text-center text-slate-600">81%</td><td class="p-4 text-center text-slate-600">38%</td><td class="p-4 text-center text-slate-600">35%</td><td class="p-4"><span class="px-3 py-1 text-sm font-semibold rounded-full border bg-orange-100 text-orange-800 border-orange-200">Needs Academic Support</span></td></tr></tbody></table></div></div>` },
+                    { id: 'timeline', title: 'Implementation Timeline', subtitle: 'Our phased rollout plan.', icon: 'fa-clock', content: `<div class="relative border-s-4 border-slate-200 ms-6"><div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Jul</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Setup & Training</h3></div></div><div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Aug</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Baseline Assessment</h3></div></div><div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Sep</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Dashboard Rollout</h3></div></div><div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Nov</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Midline Assessment</h3></div></div><div class="relative mb-10 ms-10"><div class="absolute flex items-center justify-center w-12 h-12 bg-white rounded-full -start-[31px] border-4 border-slate-200 ring-4 ring-slate-50"><span class="font-bold text-lg text-sky-600">Feb</span></div><div class="bg-white/60 p-4 rounded-lg shadow-md border border-slate-200/50"><h3 class="text-xl font-semibold text-slate-900">Endline + Awards</h3></div></div></div>` },
+                    { id: 'conclusion', title: 'Conclusion', icon: 'fa-flag-checkered', content: `<div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-xl text-white shadow-2xl"><p class="text-xl leading-relaxed">This integrated model offers a replicable blueprint for converging pedagogy and outcomes. Through structured Health Reports, third-party assessments, and strong visual tools, the district aims to drive authentic, systemic FLN transformation.</p></div>` }
+                ]
+            };
+            
+            // --- RENDER SECTIONS ---
+            appData.sections.forEach(section => {
+                const sectionEl = document.getElementById(section.id);
+                if (sectionEl) {
+                    const titleEl = `<div class="mb-12 text-center"><div class="inline-flex items-center justify-center p-4 bg-sky-100/70 rounded-full mb-4"><i class="fa-solid ${section.icon} w-10 h-10 text-sky-600"></i></div><h2 class="text-4xl md:text-5xl font-bold text-slate-800">${section.title}</h2>${section.subtitle ? `<p class="mt-4 text-lg max-w-3xl mx-auto text-slate-500">${section.subtitle}</p>` : ''}</div>`;
+                    sectionEl.innerHTML = titleEl + section.content;
+                }
+            });
+
+            // --- NAVIGATION ---
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.innerHTML = appData.sections.map(item => `
+                <li><a href="#${item.id}" class="nav-link flex items-center p-3 rounded-lg group transition-all duration-200 text-slate-300 hover:bg-white/10"><i class="fa-solid ${item.icon} w-5 h-5"></i><span class="ms-3">${item.title}</span></a></li>
+            `).join('');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            const linkHref = link.getAttribute('href');
+                            link.classList.toggle('bg-sky-500/20', linkHref === `#${entry.target.id}`);
+                            link.classList.toggle('text-white', linkHref === `#${entry.target.id}`);
+                            link.classList.toggle('text-slate-300', linkHref !== `#${entry.target.id}`);
+                            link.classList.toggle('hover:bg-white/10', linkHref !== `#${entry.target.id}`);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+            sections.forEach(section => observer.observe(section));
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
+                });
+            });
+            document.getElementById('mobile-menu-button').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            });
+
+            // --- PFI CALCULATOR ---
+            const pfiContainer = document.getElementById('pfi-calculator-container');
+            if(pfiContainer){
+                pfiContainer.innerHTML = `<div class="bg-white/70 backdrop-blur-sm shadow-lg rounded-xl p-6 border border-slate-200/50 h-full"><h4 class="text-2xl font-semibold text-slate-800 mb-4">"What-If" PFI Calculator</h4><div class="space-y-4" id="pfi-calculator-sliders"></div><div class="mt-6 text-center bg-slate-100 p-4 rounded-lg"><p class="text-slate-600 font-medium">Calculated Pedagogy Fidelity Index (PFI)</p><p id="pfi-score" class="text-4xl font-bold text-indigo-600">71.5</p></div></div>`;
+                const pfiSlidersContainer = document.getElementById('pfi-calculator-sliders');
+                const pfiSlidersConfig = [
+                    { label: "TG Usage", value: 75 },
+                    { label: "TLM Use", value: 60 },
+                    { label: "Workbook Correction", value: 80 },
+                    { label: "Student Engagement", value: 70 },
+                ];
+                pfiSlidersContainer.innerHTML = pfiSlidersConfig.map(s => `<div><div class="flex justify-between items-center mb-1"><label class="font-medium text-slate-600">${s.label}</label><span class="pfi-value text-sm font-bold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-md">${s.value}%</span></div><input type="range" min="0" max="100" value="${s.value}" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer pfi-slider"></div>`).join('');
                 
-                if (targetElement) {
-                    const yOffset = -40; 
-                    const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                    window.scrollTo({top: y, behavior: 'smooth'});
-                }
-                if (window.innerWidth < 768) {
-                    sidebar.classList.add('-translate-x-full');
-                }
-            });
-        });
+                const pfiSliders = document.querySelectorAll('.pfi-slider');
+                const pfiScoreEl = document.getElementById('pfi-score');
+                const pfiValues = document.querySelectorAll('.pfi-value');
+                const weights = { tg: 0.3, tlm: 0.25, workbook: 0.25, engagement: 0.2 };
 
-        // Intersection Observer to update active nav link on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('bg-sky-500/20', 'text-white');
-                        link.classList.add('text-slate-300', 'hover:bg-white/10');
-                        if (link.getAttribute('href').substring(1) === entry.target.id) {
-                            link.classList.add('bg-sky-500/20', 'text-white');
-                            link.classList.remove('text-slate-300', 'hover:bg-white/10');
-                        }
+                function calculatePFI() {
+                    const score = Array.from(pfiSliders).reduce((acc, slider, i) => {
+                        return acc + (slider.value * Object.values(weights)[i]);
+                    }, 0);
+                    pfiScoreEl.textContent = score.toFixed(1);
+                }
+                pfiSliders.forEach((slider, index) => {
+                    slider.addEventListener('input', (e) => {
+                        pfiValues[index].textContent = `${e.target.value}%`;
+                        calculatePFI();
                     });
-                }
-            });
-        }, { rootMargin: "-50% 0px -50% 0px" });
+                });
+                calculatePFI();
+            }
 
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        // Mobile menu toggle
-        mobileMenuButton.addEventListener('click', () => {
-            sidebar.classList.toggle('-translate-x-full');
+            // --- INTERACTIVE MATRIX ---
+            const matrixContainer = document.getElementById('matrix-container');
+            if(matrixContainer){
+                const quadrants = [
+                    { id: 'needs-support', color: 'bg-orange-500/80', icon: 'fa-circle-question', title: 'Needs Academic Support', info: '<strong>Example:</strong> PS Deori shows high TG usage (PFI: 81%) but low test scores (NIPUN %: 35%). <br><strong>Action:</strong> Targeted pedagogical mentoring on concept delivery.' },
+                    { id: 'model', color: 'bg-green-500/80', icon: 'fa-award', title: 'Model Schools', info: '<strong>Example:</strong> PS Bagora shows high fidelity (PFI: 90%) and strong test scores (NIPUN %: 88%). <br><strong>Action:</strong> Recognize as a Model School and facilitate peer learning.' },
+                    { id: 'priority', color: 'bg-red-600/80', icon: 'fa-users', title: 'Priority for Mentoring', info: '<strong>Example:</strong> PS Barha shows low TG usage (PFI: 30%) and low test scores (NIPUN %: 25%). <br><strong>Action:</strong> Intensive, foundational mentoring and support.' },
+                    { id: 'gaming', color: 'bg-yellow-500/80', icon: 'fa-eye', title: 'Gaming Risk', info: "<strong>Example:</strong> PS Sukha shows low fidelity (PFI: 40%) but high teacher-reported scores (NIPUN %: 92%). <br><strong>Action:</strong> Flag for 'Teach to Test' risk and verify data authenticity." },
+                ];
+                matrixContainer.innerHTML = `<div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 md:p-12 rounded-2xl shadow-2xl"><h3 class="text-3xl font-bold text-center mb-8 text-white">Interactive Practice vs. Outcome Matrix</h3><div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-white"><div></div><div class="text-center font-bold p-2 text-slate-300">Low Outcome</div><div class="text-center font-bold p-2 text-slate-300">High Outcome</div><div class="text-center font-bold p-2 self-center text-slate-300">High Fidelity</div><div class="matrix-quadrant flex flex-col justify-center items-center p-6 rounded-lg text-center ${quadrants[0].color}" data-info='${JSON.stringify(quadrants[0])}'><i class="fa-solid ${quadrants[0].icon} w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">${quadrants[0].title}</h4></div><div class="matrix-quadrant flex flex-col justify-center items-center p-6 rounded-lg text-center ${quadrants[1].color}" data-info='${JSON.stringify(quadrants[1])}'><i class="fa-solid ${quadrants[1].icon} w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">${quadrants[1].title}</h4></div><div class="text-center font-bold p-2 self-center text-slate-300">Low Fidelity</div><div class="matrix-quadrant flex flex-col justify-center items-center p-6 rounded-lg text-center ${quadrants[2].color}" data-info='${JSON.stringify(quadrants[2])}'><i class="fa-solid ${quadrants[2].icon} w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">${quadrants[2].title}</h4></div><div class="matrix-quadrant flex flex-col justify-center items-center p-6 rounded-lg text-center ${quadrants[3].color}" data-info='${JSON.stringify(quadrants[3])}'><i class="fa-solid ${quadrants[3].icon} w-10 h-10 mb-2"></i><h4 class="font-bold text-lg">${quadrants[3].title}</h4></div></div></div>`;
+                
+                const modal = document.getElementById('matrix-modal');
+                const modalContent = document.getElementById('modal-content-box');
+                document.querySelectorAll('.matrix-quadrant').forEach(quad => {
+                    quad.addEventListener('click', () => {
+                        const data = JSON.parse(quad.dataset.info);
+                        modalContent.innerHTML = `<div class="flex items-center mb-4"><i class="fa-solid ${data.icon} fa-2x mr-4 ${data.color.replace('/80','')} text-white p-3 rounded-full"></i><h3 class="text-2xl font-bold text-slate-800">${data.title}</h3></div><div class="text-slate-600 leading-relaxed">${data.info}</div><button id="modal-close-btn" class="mt-6 w-full bg-slate-200 text-slate-800 font-bold py-2 px-4 rounded-lg hover:bg-slate-300">Close</button>`;
+                        modal.classList.add('active');
+                    });
+                });
+                modal.addEventListener('click', () => modal.classList.remove('active'));
+            }
         });
     </script>
 </body>
